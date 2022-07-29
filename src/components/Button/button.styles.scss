@@ -1,0 +1,8 @@
+@import '../../styles/styles.scss'; 
+
+.button {
+    @include borders;
+    width: 30px;
+    height: 30px;
+
+}

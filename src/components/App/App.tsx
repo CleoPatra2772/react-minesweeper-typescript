@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import NumberDisplay from '../number-display/number-display-component';
 import './App.scss';
+import { generateCells } from '../../utils/function';
+import Button from '../Button/button';
 
 const App: React.FC = () => {
+    const [cells, setCells] = useState(generateCells());
+
+    const renderCells = (): React.ReactNode => {
+        return cells.map((row, rowIndex) => 
+        row.map((cell, colIndex) => <Button key={`${rowIndex}-${colIndex}`}/>))
+    }
+
+    console.log("Cells", cells);
+
     return <div className='App'>
        <div className ='header'>
         <NumberDisplay value={0} />
@@ -11,7 +22,7 @@ const App: React.FC = () => {
             </div>
         <NumberDisplay value={23} />
        </div>
-       <div className='body'>Body</div>
+       <div className='body'>{renderCells()}</div>
     </div>
 }
 
