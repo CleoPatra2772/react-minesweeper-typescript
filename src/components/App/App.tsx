@@ -1,9 +1,9 @@
 import React, { useEffect,useState } from 'react';
 import NumberDisplay from '../number-display/number-display-component';
 import './App.scss';
-import { generateCells } from '../../utils/function';
+import { generateCells, openMultipleCells} from '../../utils/function';
 import Button from '../Button/button';
-import { Cell, CellState, Face } from '../../types/types';
+import { Cell, CellState, CellValue, Face } from '../../types/types';
 import { setInterval } from 'timers/promises';
 
 const App: React.FC = () => {
@@ -48,8 +48,27 @@ const App: React.FC = () => {
     const handleCellClick = (rowParam: number, colParam: number) => () :void => {
         //start the game
         if(!live){
+            //TODO: Make sure you don't click on a bomb in the beginning.
             setLive(true);
         }  
+
+        const currentCell = cells[rowParam][colParam];
+        let newCells = cells.slice();
+
+        if(
+            [CellState.flagged, CellState.visible].includes(currentCell.state)){
+                return;
+            }
+
+        if(currentCell.value === CellValue.bomb){
+            //TODO : take care of bomb click
+        }else if (currentCell.value === CellValue.none){
+            newCells = openMultipleCells(newCells, rowParam, colParam);
+            setCells(newCells);
+        }else {
+            newCells[rowParam][colParam].state = CellState.visible;
+            setCells(newCells);
+        }
     }
 
     const handleCellContext = (rowParam: number, colParam: number) => 
